@@ -21,4 +21,37 @@ export function renderStore() {
 
     app.appendChild(header);
     app.appendChild(container);
+
+    setupProductListeners()
 }
+
+function setupProductListeners() {
+    const productCards = document.querySelectorAll('[data-product-id]');
+    
+    productCards.forEach(card => {
+      const productId = card.dataset.productId;
+      const product = products.find(p => p.id === parseInt(productId));
+      
+      const decreaseButton = card.querySelector('.quantity-decrease');
+      const increaseButton = card.querySelector('.quantity-increase');
+      const quantityValue = card.querySelector('.quantity-value');
+      
+      let quantity = quantityValue.innerHTML || 1;
+      
+      decreaseButton.addEventListener('click', () => {
+        if (quantity > 1) {
+          quantity--;
+          quantityValue.textContent = quantity;
+        }
+      });
+      
+      increaseButton.addEventListener('click', () => {
+        if (quantity < product.stock) {
+          quantity++;
+          quantityValue.textContent = quantity;
+        } else {
+          alert(`Sorry, only ${product.stock} ${product.name} available.`);
+        }
+      });
+    });
+  }
