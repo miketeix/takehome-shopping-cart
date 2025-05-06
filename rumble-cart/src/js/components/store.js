@@ -32,11 +32,29 @@ function setupProductListeners() {
       const productId = card.dataset.productId;
       const product = products.find(p => p.id === parseInt(productId));
       
+      const addButton = card.querySelector('.add-to-cart');
       const decreaseButton = card.querySelector('.quantity-decrease');
       const increaseButton = card.querySelector('.quantity-increase');
       const quantityValue = card.querySelector('.quantity-value');
       
       let quantity = quantityValue.innerHTML || 1;
+      
+      addButton.addEventListener('click', () => {
+        const success = cartService.addItem(product, quantity);
+        
+        if (success) {
+          quantity = 1;
+          quantityValue.textContent = quantity;
+          
+          addButton.textContent = 'Added!';
+          addButton.classList.add('added-to-cart');
+          
+          setTimeout(() => {
+            addButton.textContent = 'Add to Cart';
+            addButton.classList.remove('added-to-cart');
+          }, 1000);
+        }
+      });
       
       decreaseButton.addEventListener('click', () => {
         if (quantity > 1) {
