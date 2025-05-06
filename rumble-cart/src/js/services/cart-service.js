@@ -29,3 +29,6 @@ class CartService {
       
       return true;
     }
+    getItems() {
+      return [...this.items];
+    }

@@ -1,6 +1,8 @@
 import { renderHeader } from "./header";
 import {createProductCard} from "./productCard";
 import { products } from "../data/products";
+import { cartService } from "../services/cart-service";
+import { renderCart } from "./cart";
 
 export function renderStore() {
     const app = document.getElementById('app');
@@ -18,6 +20,12 @@ export function renderStore() {
         </div>
     `;
     container.appendChild(productsSection);
+
+
+    const cartSection = document.createElement('div');
+    cartSection.innerHTML = renderCart()
+    console.log('cartSection', cartSection)
+    container.appendChild(cartSection);
 
     app.appendChild(header);
     app.appendChild(container);
