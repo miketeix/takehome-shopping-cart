@@ -3,6 +3,7 @@ import {formatCurrency} from "../utils/currency"
 
 export function renderCart() {
     const items = cartService.getItems();
+    const totals = cartService.calculateTotals();
     if (items.length === 0) {
       return `
         <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">

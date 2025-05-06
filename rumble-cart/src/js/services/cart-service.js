@@ -46,6 +46,41 @@ class CartService {
     getItems() {
       return [...this.items];
     }
+    calculateTotals() {
+      let subtotal = 0;
+      let savings = 0;
+      let finalTotal = 0;
+      const appliedCoupons = [];
+      this.items.forEach(item => {
+        subtotal += item.product.price * item.quantity;
+      });
+  
+      // Apply B2GO (Buy 2 Get 1 Free) coupons
+      this.items.forEach(item => {
+        if (item.product.coupons && item.product.coupons.includes('B2GO') && item.quantity >= 3) {
+          // Calculate how many free items should be given
+          const freeItems = Math.floor(item.quantity / 3);
+          const discount = freeItems * item.product.price;
+          
+          savings += discount;
+          appliedCoupons.push({
+            name: 'B2GO',
+            productId: item.product.id,
+            productName: item.product.name,
+            savings: discount
+          });
+        }
+      });
+  
+      finalTotal = subtotal - savings;
+  
+      return {
+        subtotal,
+        savings,
+        finalTotal,
+        appliedCoupons
+      };
+    }
     subscribe(listener) {
       this.listeners.push(listener);
     }
